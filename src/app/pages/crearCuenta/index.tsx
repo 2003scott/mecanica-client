@@ -10,27 +10,28 @@ import { toast } from "sonner"
 import { Inputform } from "@/components/custom/input-form"
 import { http } from "@/app/proxys/http"
 
-export const Login = () => {
+export const CrearCuenta = () => {
 
     const [, navigate] = useLocation()
     const { login } = UseAuth()
     const { register, handleSubmit, reset, formState : { errors } } = useForm()
 
     const onSubmit = (data: any) => {
-    http.post("/users", {
-        username: data.username,
-        password: data.password
-    })
-        .then(() => {
-            toast.success("Inicio de sesión exitoso");
-            console.log("exito")
-            navigate("/")
+        http.post("/users", {
+            username: data.username,
+            password: data.password
         })
-        .catch(() => {
-            toast.error("Error al iniciar sesión");
-            console.log("mal")
-        });
+            .then(() => {
+                toast.success("Cuenta creada exitosamente");
+                console.log("Usuario creado:");
+                navigate("/login");
+            })
+            .catch(() => {
+                toast.error("Error al crear la cuenta");
+                console.error("Error");
+            });
     };
+
 
 
     return (
@@ -58,7 +59,6 @@ export const Login = () => {
                     <Button type="submit" className="w-full">
                         Iniciar sesión
                     </Button>
-                    <p>¿No tienes cuenta? <a href="/crearCuenta">Crear cuenta</a></p>
                 </form>
             </div>
         </div>

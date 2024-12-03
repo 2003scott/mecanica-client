@@ -5,6 +5,7 @@ import { AuthProvider } from './app/context/auth-context'
 import { Toaster } from "sonner"
 import { Home } from './app/pages/home'
 import Error from './app/pages/error'
+import { CrearCuenta } from './app/pages/crearCuenta'
 
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
                 <Router>
                     <Route path={route.login} component={Login} />
                     <Route path={route.home} component={Home} />
+                    <Route path={route.crearCuenta} component={CrearCuenta} />
                     {/* Router 404 */}
                     <Route path="/:rest*" component={Error} />
                 </Router>
