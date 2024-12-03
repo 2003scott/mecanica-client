@@ -1,37 +1,34 @@
-import { Label } from "@/components/ui/label"
+
 import { Button } from "@/components/ui/button"
-import { Link, useLocation } from "wouter"
-import { SVGProps } from "react"
-import { JSX } from "react/jsx-runtime"
 import { UseAuth } from "@/app/context/auth-context"
 import { useForm } from "react-hook-form"
-import session from "../../../../sesions.json"
 import { toast } from "sonner"
 import { Inputform } from "@/components/custom/input-form"
 import { http } from "@/app/proxys/http"
+import { CarIcon } from "lucide-react"
+import { Link, useNavigate } from "react-router-dom"
 
 export const Login = () => {
 
-    const [, navigate] = useLocation()
+    const navigate = useNavigate()
     const { login } = UseAuth()
-    const { register, handleSubmit, reset, formState : { errors } } = useForm()
+    const { register, handleSubmit, reset, formState: { errors } } = useForm()
 
     const onSubmit = (data: any) => {
-    http.post("/users", {
-        username: data.username,
-        password: data.password
-    })
-        .then(() => {
-            toast.success("Inicio de sesión exitoso");
-            console.log("exito")
-            navigate("/")
+        http.post("/users", {
+            username: data.username,
+            password: data.password
         })
-        .catch(() => {
-            toast.error("Error al iniciar sesión");
-            console.log("mal")
-        });
+            .then(() => {
+                toast.success("Inicio de sesión exitoso");
+                console.log("exito")
+                navigate("/")
+            })
+            .catch(() => {
+                toast.error("Error al iniciar sesión");
+                console.log("mal")
+            });
     };
-
 
     return (
         <div className="flex min-h-screen items-center justify-center bg-cover bg-center bg-primary">
@@ -46,7 +43,7 @@ export const Login = () => {
                         title="usuario"
                         placeholder="Ingresa tu nombre de usuario"
                         {...register('username', { required: true })}
-                        error={errors && errors.user && 'El usuario es requerido'}
+                        error={errors && errors.username && 'El usuario es requerido'}
                     />
                     <Inputform
                         title="Contraseña"
@@ -58,31 +55,13 @@ export const Login = () => {
                     <Button type="submit" className="w-full">
                         Iniciar sesión
                     </Button>
-                    <p>¿No tienes cuenta? <a href="/crearCuenta">Crear cuenta</a></p>
+                    <Button variant="link" type="button">
+                        <Link to="/crearCuenta">
+                            ¿No tienes usuario y contraseña?
+                        </Link>
+                    </Button>
                 </form>
             </div>
         </div>
-    )
-}
-
-function CarIcon(props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) {
-    return (
-        <svg
-            {...props}
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-        >
-            <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2" />
-            <circle cx="7" cy="17" r="2" />
-            <path d="M9 17h6" />
-            <circle cx="17" cy="17" r="2" />
-        </svg>
     )
 }

@@ -3,7 +3,7 @@
 import { LayoutGrid, LogOut, User } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button";
-import { Link } from "wouter";
+import { Link } from "react-router-dom";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
@@ -41,13 +41,13 @@ export const UserIcon = () => {
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
                     <DropdownMenuItem className="hover:cursor-pointer" asChild>
-                        <Link href="/dashboard" className="flex items-center">
+                        <Link to="/dashboard" className="flex items-center">
                             <LayoutGrid className="w-4 h-4 mr-3 text-muted-foreground" />
                             Tablero
                         </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem className="hover:cursor-pointer" asChild>
-                        <Link href="/account" className="flex items-center">
+                        <Link to="/account" className="flex items-center">
                             <User className="w-4 h-4 mr-3 text-muted-foreground" />
                             Cuenta
                         </Link>

@@ -7,7 +7,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { cn } from "@/lib/utils";
 import { ChevronDown, Dot, LucideIcon } from "lucide-react";
 import { useState } from "react";
-import { Link } from "wouter";
+import { Link } from "react-router-dom";
 
 
 
@@ -84,7 +84,7 @@ export const CollapseMenuButton = ({ icon: Icon, label, active, submenus, isOpen
                         className="w-full justify-start h-10 mb-1"
                         asChild
                     >
-                        <Link href={href}>
+                        <Link to={href}>
                             <span className="mr-4 ml-2">
                                 <Dot size={18} />
                             </span>
@@ -143,7 +143,7 @@ export const CollapseMenuButton = ({ icon: Icon, label, active, submenus, isOpen
                 <DropdownMenuSeparator />
                 {submenus.map(({ href, label }, index) => (
                     <DropdownMenuItem key={index} asChild>
-                        <Link className="cursor-pointer" href={href}>
+                        <Link className="cursor-pointer" to={href}>
                             <p className="max-w-[180px] truncate">{label}</p>
                         </Link>
                     </DropdownMenuItem>

@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { route } from "@/routes";
 import { Car } from "lucide-react";
-import { Link } from "wouter";
+import { Link } from "react-router-dom";
 
 export default function Error() {
     return (
@@ -23,7 +23,7 @@ export default function Error() {
                                 Parece que estás perdido
                             </h3>
                             <p className="text-gray-600 pb-5">¡La página que estás buscando no está disponible!</p>
-                            <Link href={route.home}>
+                            <Link to={route.home}>
                                 <Button>
                                     Volver al panel
                                 </Button>

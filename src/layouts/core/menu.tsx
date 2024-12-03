@@ -1,12 +1,11 @@
 "use client"
 
-import { usePathname } from "wouter/use-browser-location";
 import { getMenuList } from "./menulist/menu-list";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Ellipsis, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Link, useLocation } from "wouter";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { CollapseMenuButton } from "./collapse-menu-buton";
 import { UseAuth } from "@/app/context/auth-context";
@@ -17,9 +16,10 @@ import { toast } from "sonner";
 export const Menu = ({ isOpen }: { isOpen: boolean | undefined }) => {
 
     const { logout } = UseAuth();
-    const pathname = usePathname();
+    const location = useLocation()
+    const pathname = location.pathname
     const menuList = getMenuList(pathname);
-    const [,navigate] = useLocation()
+    const navigate = useNavigate()
 
     const logOut = () =>{
         logout()
@@ -65,7 +65,7 @@ export const Menu = ({ isOpen }: { isOpen: boolean | undefined }) => {
                                                             className="w-full justify-start h-10 mb-1"
                                                             asChild
                                                         >
-                                                            <Link href={href}>
+                                                            <Link to={href}>
                                                                 <span
                                                                     className={cn(isOpen === false ? "" : "mr-4")}
                                                                 >

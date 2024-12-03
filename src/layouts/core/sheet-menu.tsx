@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetHeader, SheetTrigger } from "@/components/ui/sheet"
 import { Car, MenuIcon } from "lucide-react"
-import { Link } from "wouter"
+import { Link } from "react-router-dom"
 import { Menu } from "./menu"
 import { route } from "@/routes"
 
@@ -20,7 +20,7 @@ export const SheetMenu = () => {
                         variant="link"
                         asChild
                     >
-                        <Link href={route.home} className="flex items-center gap-2">
+                        <Link to={route.home} className="flex items-center gap-2">
                             <Car  height={80} width={80}/>
                         </Link>
                     </Button>
