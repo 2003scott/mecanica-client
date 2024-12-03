@@ -2,7 +2,7 @@ import { useSidebarToggle } from "@/store/sidebar-store";
 import { useStore } from "@/store/use-store";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Link } from "wouter";
+import { Link } from "react-router-dom";
 import { SidebarToggle } from "./sidebar-toogle";
 import { Menu } from "./menu";
 import { route } from "@/routes";
@@ -32,7 +32,7 @@ export const Sidebar = () => {
                     variant="link"
                     asChild
                 >
-                    <Link href={route.home} className="flex items-center gap-2">
+                    <Link to={route.home} className="flex items-center gap-2">
                         <Car height={65} width={65}/>
                         <h1
                             className={cn(
