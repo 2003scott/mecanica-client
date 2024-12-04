@@ -9,7 +9,7 @@ import { Login, Signup } from './app/pages/auth'
 function App() {
     return (
         <AuthProvider>
-            <Toaster expand={false} />
+            <Toaster expand={false} richColors  />
             <BrowserRouter>
                 <Routes>
                     <Route path={route.login} element={<Login/>} />

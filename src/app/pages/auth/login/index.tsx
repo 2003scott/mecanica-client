@@ -8,6 +8,15 @@ import { http } from "@/app/proxys/http"
 import { CarIcon } from "lucide-react"
 import { Link, useNavigate } from "react-router-dom"
 
+interface LoginResponse {
+    success: boolean;
+    result: {
+        token: string;
+        expiresAt: number;
+    };
+}
+
+
 export const Login = () => {
 
     const navigate = useNavigate()
@@ -15,18 +24,23 @@ export const Login = () => {
     const { register, handleSubmit, reset, formState: { errors } } = useForm()
 
     const onSubmit = (data: any) => {
-        http.post("/users", {
+        http.post<LoginResponse>("/users/login", {
             username: data.username,
             password: data.password
         })
-            .then(() => {
-                toast.success("Inicio de sesión exitoso");
-                console.log("exito")
-                navigate("/")
+            .then((e) => {
+                const { token } = e.data.result;
+
+                if (token) {
+                    toast.success("Inicio de sesión exitoso");
+                    navigate("/");
+                } else {
+                    toast.error("No se recibió un token.");
+                }
             })
-            .catch(() => {
+            .catch((e) => {
                 toast.error("Error al iniciar sesión");
-                console.log("mal")
+                console.log("Error:", e);
             });
     };
 
