@@ -5,28 +5,48 @@ import { toast } from "sonner"
 import { Inputform } from "@/components/custom/input-form"
 import { http } from "@/app/proxys/http"
 import { CarIcon } from "lucide-react"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
+
+interface UserResponse {
+    success: boolean;
+    result: {
+        id: string;
+        username: string;
+        password: string;
+        status: string;
+        token: string | null;
+    };
+}
+
 
 export const Signup = () => {
 
     const navigate = useNavigate()
     const { login } = UseAuth()
-    const { register, handleSubmit, reset, formState : { errors } } = useForm()
+    const { register, handleSubmit, reset, formState: { errors } } = useForm()
 
     const onSubmit = (data: any) => {
-        http.post("/users", {
+        http.post<UserResponse>("/users", {
             username: data.username,
             password: data.password
         })
+            .then((e) => {
+                const token = e.data.result.token;
+                return http.post(`/users/confirm/${token}`, {
+                    username: data.username
+                });
+
+            })
             .then(() => {
-                toast.success("Cuenta creada exitosamente");
-                console.log("Usuario creado:");
+                toast.success("Cuenta creada y confirmada exitosamente");
+                console.log("Confirmación exitosa");
                 navigate("/login");
             })
-            .catch(() => {
-                toast.error("Error al crear la cuenta");
-                console.error("Error");
+            .catch((error) => {
+                toast.error("Error durante el proceso: " + (error.response?.data?.error || error.message));
+                console.log("Error", error);
             });
+
     };
 
     return (
@@ -52,6 +72,11 @@ export const Signup = () => {
                     />
                     <Button type="submit" className="w-full">
                         Crear usuario
+                    </Button>
+                    <Button variant="link" type="button">
+                        <Link to="/crearCuenta">
+                            ¿Tienes cuenta?
+                        </Link>
                     </Button>
                 </form>
             </div>
