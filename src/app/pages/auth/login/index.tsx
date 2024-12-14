@@ -7,6 +7,7 @@ import { Inputform } from "@/components/custom/input-form"
 import { http } from "@/app/proxys/http"
 import { CarIcon } from "lucide-react"
 import { Link, useNavigate } from "react-router-dom"
+import { Auth } from "@/app/domain/auth"
 
 interface LoginResponse {
     success: boolean;
@@ -18,31 +19,39 @@ interface LoginResponse {
 
 
 export const Login = () => {
-
-    const navigate = useNavigate()
-    const { login } = UseAuth()
-    const { register, handleSubmit, reset, formState: { errors } } = useForm()
+    const navigate = useNavigate();
+    const { login } = UseAuth();
+    const { register, handleSubmit, reset, formState: { errors } } = useForm();
 
     const onSubmit = (data: any) => {
         http.post<LoginResponse>("/users/login", {
             username: data.username,
             password: data.password
         })
-            .then((e) => {
-                const { token } = e.data.result;
+        .then((response) => {
+            const { token } = response.data.result;
 
-                if (token) {
-                    toast.success("Inicio de sesión exitoso");
-                    navigate("/");
-                } else {
-                    toast.error("No se recibió un token.");
-                }
-            })
-            .catch((e) => {
-                toast.error("Error al iniciar sesión");
-                console.log("Error:", e);
-            });
+            if (token) {
+                localStorage.setItem("token", token);
+                toast.success("Inicio de sesión exitoso");
+
+                return http.get<Auth>(`/users/${data.username}`);
+            } else {
+                toast.error("No se recibió un token.");
+                throw new Error("Token no encontrado");
+            }
+        })
+        .then((response:any) => {
+            const { username } = response.data.result;
+            login({ username, token: localStorage.getItem("token") });
+            navigate("/");
+        })
+        .catch((error) => {
+            toast.error("Error al iniciar sesión");
+            console.error("Error:", error);
+        });
     };
+
 
     return (
         <div className="flex min-h-screen items-center justify-center bg-cover bg-center bg-primary">

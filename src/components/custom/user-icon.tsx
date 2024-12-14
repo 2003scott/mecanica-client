@@ -1,13 +1,14 @@
-"use client"
-
 import { LayoutGrid, LogOut, User } from "lucide-react";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { UseAuth } from "@/app/context/auth-context";
 
 export const UserIcon = () => {
+    const { user } = UseAuth();
+
     return (
         <DropdownMenu>
             <TooltipProvider disableHoverableContent>
@@ -20,7 +21,9 @@ export const UserIcon = () => {
                             >
                                 <Avatar className="h-8 w-8">
                                     <AvatarImage src="#" alt="Avatar" />
-                                    <AvatarFallback className="bg-transparent">DS</AvatarFallback>
+                                    <AvatarFallback className="bg-transparent">
+                                        {user?.username ? user.username[0] : 'U'}
+                                    </AvatarFallback>
                                 </Avatar>
                             </Button>
                         </DropdownMenuTrigger>
@@ -32,9 +35,9 @@ export const UserIcon = () => {
             <DropdownMenuContent className="w-56" align="end" forceMount>
                 <DropdownMenuLabel className="font-normal">
                     <div className="flex flex-col space-y-1">
-                        <p className="text-sm font-medium leading-none">Diego Scott</p>
+                        <p className="text-sm font-medium leading-none">{user?.username || "Invitado"}</p>
                         <p className="text-xs leading-none text-muted-foreground">
-                            diego@example.com
+                            {user?.username || "nada"}
                         </p>
                     </div>
                 </DropdownMenuLabel>
@@ -60,5 +63,5 @@ export const UserIcon = () => {
                 </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
-    )
-}
+    );
+};

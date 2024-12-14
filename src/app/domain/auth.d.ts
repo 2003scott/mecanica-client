@@ -1,4 +1,7 @@
 export interface Auth {
-    user:string;
-    password:string
+    id?: string;
+    username?: string;
+    password?: string;
+    status?: string;
+    token?: string | null;
 }
