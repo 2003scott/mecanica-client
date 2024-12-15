@@ -4,4 +4,5 @@ export interface Auth {
     password?: string;
     status?: string;
     token?: string | null;
+    refreshToken?: string | null;
 }

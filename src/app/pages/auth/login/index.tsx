@@ -26,28 +26,53 @@ export const Login = () => {
     const onSubmit = (data: any) => {
         http.post<LoginResponse>("/users/login", {
             username: data.username,
-            password: data.password
+            password: data.password,
         })
         .then((response) => {
             const { token } = response.data.result;
+            console.log("Token recibido:", token);
 
-            if (token) {
-                localStorage.setItem("token", token);
-                toast.success("Inicio de sesión exitoso");
-
-                return http.get<Auth>(`/users/${data.username}`);
-            } else {
+            if (!token) {
                 toast.error("No se recibió un token.");
                 throw new Error("Token no encontrado");
             }
+
+            localStorage.setItem("token", token);
+
+            return http.post("/users/refresh-token", {}, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+        })
+        .then((response:any) => {
+            console.log(response)
+            const { token } = response.data.result;
+            console.log("Refresh Token recibido:", token);
+
+            if (!token) {
+                toast.error("No se recibió un refresh token.");
+                throw new Error("Refresh token no encontrado");
+            }
+
+            localStorage.setItem("refreshToken", token);
+
+            return http.get<Auth>(`/users/${data.username}`);
         })
         .then((response:any) => {
             const { username } = response.data.result;
-            login({ username, token: localStorage.getItem("token") });
+
+            login({
+                username,
+                token: localStorage.getItem("token"),
+                refreshToken: localStorage.getItem("refreshToken"),
+            });
+
+            toast.success("Inicio de sesión exitoso");
             navigate("/");
         })
         .catch((error) => {
-            toast.error("Error al iniciar sesión");
+            toast.error("Error al iniciar sesión. Verifica tus credenciales.");
             console.error("Error:", error);
         });
     };
