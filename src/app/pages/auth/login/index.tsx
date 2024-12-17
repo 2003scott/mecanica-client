@@ -20,6 +20,39 @@ interface LoginResponse {
 
 export const Login = () => {
     const navigate = useNavigate();
+    const { loginUserName } = UseAuth();
+    const { register, handleSubmit, reset, formState: { errors } } = useForm();
+
+    const onSubmit = (data: any) => {
+        const password = data.password
+        const user = data.username
+        http.post<LoginResponse>("/users/login", {
+            username: data.username,
+            password: data.password,
+        })
+        http.get<Auth>(`/users/${user}`)
+            .then((response:any) => {
+                const { username } = response.data.result;
+                console.log(username)
+
+                loginUserName(
+                    username,
+                    password
+                );
+                toast.success("Inicio de sesión exitoso");
+                navigate("/");
+            })
+            .catch((error) => {
+                toast.error("Error al iniciar sesión. Verifica tus credenciales.");
+                console.error("Error:", error);
+            });
+
+    };
+
+
+
+/* export const Login = () => {
+    const navigate = useNavigate();
     const { login } = UseAuth();
     const { register, handleSubmit, reset, formState: { errors } } = useForm();
 
@@ -67,7 +100,6 @@ export const Login = () => {
                 token: localStorage.getItem("token"),
                 refreshToken: localStorage.getItem("refreshToken"),
             });
-
             toast.success("Inicio de sesión exitoso");
             navigate("/");
         })
@@ -75,7 +107,7 @@ export const Login = () => {
             toast.error("Error al iniciar sesión. Verifica tus credenciales.");
             console.error("Error:", error);
         });
-    };
+    }; */
 
 
     return (
