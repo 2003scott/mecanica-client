@@ -5,7 +5,7 @@ import { AxiosError } from "axios"
 const fetchQuery = async (url: string) => {
     try {
         const response = await http.get(`${url}`)
-        if (response.status === 200) {
+        if (response.status === 201 || response.status === 200) {
             history.pushState(
                 {
                     data: response.data,
