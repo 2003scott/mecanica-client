@@ -7,7 +7,7 @@ import { route } from '@/routes';
 
 export const Vehicles = () => {
 
-    const { data, error, isLoading, refetch } = useFetch('/vasdfasdasehicles');
+    const { data, error, isLoading, refetch } = useFetch('/vehicles');
 
     if (isLoading) return <div>Loading...</div>;
 
