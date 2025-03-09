@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button"
-import { Link } from "wouter"
+import { Link } from "react-router-dom"
 
 
 export const ErrorPage = ({ mensaje }: { mensaje: string }) => {
@@ -13,7 +13,7 @@ export const ErrorPage = ({ mensaje }: { mensaje: string }) => {
                             <p>Algo no salio bien :c</p>
                             <p>Si crees que este es un error contacta a soporte.</p>
                         </article>
-                        <Link href={"/dashboard"}>
+                        <Link to={"/dashboard"}>
                             <Button>
                                 Volver al Panel
                             </Button>
