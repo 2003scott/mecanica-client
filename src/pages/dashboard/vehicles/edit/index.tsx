@@ -6,19 +6,27 @@ import { useFetch } from "@/hooks/useFetch";
 import { http } from "@/proxys/http";
 import { route } from "@/routes";
 import { vehicle } from "@/types/vehicles";
-import { useState } from "react";
+import { Loader } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 import { toast } from "sonner";
 
 export const EditVehicle = () => {
 
-    const { id } = useParams<{id:string}>()
+    const { id } = useParams<{ id: string }>()
 
-    const { data, error, isLoading : loadingVehicles } = useFetch(`/vehicles/${id}`)
+    const { data, error, isLoading: loadingVehicles } = useFetch(`/vehicles/${id}`)
 
-    const { handleSubmit, register, formState: { errors }, reset } = useForm<vehicle>()
+    const { handleSubmit, register, formState: { errors }, reset, setValue } = useForm<vehicle>()
     const [isLoading, setIsLoading] = useState(false)
+
+    useEffect(() => {
+        if (data) {
+            const registrationDate = new Date(data.result.registrationDate).toISOString().split('T')[0];
+            setValue("registrationDate", registrationDate);
+        }
+    }, [data, setValue]);
 
     const onSubmit = async (data: vehicle) => {
         const dataForm = {
@@ -35,7 +43,6 @@ export const EditVehicle = () => {
             .then(() => {
                 setIsLoading(false)
                 toast.success("Vehiculo Editado correctamente")
-                reset()
             }
             ).catch(() => {
                 setIsLoading(false)
@@ -43,9 +50,11 @@ export const EditVehicle = () => {
             })
     }
 
-    if (loadingVehicles) return <div>Loading...</div>;
+    if (loadingVehicles) return <Loader />;
 
     if (error) return <div>Error...</div>;
+
+    console.log(data.result.registrationDate)
 
     return (
         <>
@@ -115,6 +124,7 @@ export const EditVehicle = () => {
                         {...register("registrationDate", { required: true })}
                         error={errors.registrationDate && "El campo es requerido"}
                     />
+
 
 
                     <TextAreaform
