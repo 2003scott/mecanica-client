@@ -3,9 +3,11 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from ".
 import { Pencil, Trash } from "lucide-react"
 import { DialogForm } from "./dialog-form"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
-import { usePathname } from "wouter/use-browser-location"
-import { Link } from "wouter"
+/* import { usePathname } from "wouter/use-browser-location"
+import { Link } from "wouter" */
+
 import { Button } from "@/components/ui/button"
+import { Link, useLocation } from "react-router-dom"
 
 
 interface DataTableColumn<T> {
@@ -108,7 +110,7 @@ DataTable.Skeleton = DataTableSkeleton
 const DataTableActions = ({ ...props }) => {
     const id = props?._id || props?.id;
 
-    const pathname = usePathname()
+    const pathname = useLocation()
 
     const handleDelete = async () => {
 /*         const path = history.state?.path
@@ -131,7 +133,7 @@ const DataTableActions = ({ ...props }) => {
     return (
         <div className="flex gap-2 text-xl">
             {props.edit && (
-                <Link href={`${pathname}/edit/${id}`}>
+                <Link to={`${pathname}/edit/${id}`}>
                     <Button variant={"outline"} size={"icon"} className="text-blue-400">
                         <Pencil size={20} />
                     </Button>
