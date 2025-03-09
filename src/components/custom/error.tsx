@@ -7,7 +7,7 @@ export const ErrorPage = ({ mensaje }: { mensaje: string }) => {
         <div className="flex flex-col items-center justify-center py-20">
             <div className="max-w-2xl w-full flex flex-col md:flex-row items-center justify-between gap-10">
                 <div className="space-y-4">
-                    <img src="/images/logo.avif" alt="logo" />
+                    <img src="" alt="logo" />
                     <div className="pl-4 space-y-4">
                         <article className="pb-4 space-y-1">
                             <p>Algo no salio bien :c</p>
@@ -22,7 +22,7 @@ export const ErrorPage = ({ mensaje }: { mensaje: string }) => {
                 </div>
                 <div className="relative">
                     <h2 className="text-2xl font-normal pb-4 text-center">{mensaje}</h2>
-                    <img src="/images/erroricon.svg" alt="error" draggable="false" />
+                    <img src="" alt="error" draggable="false" />
                 </div>
             </div>
         </div>

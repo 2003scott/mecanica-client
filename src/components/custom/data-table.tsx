@@ -5,6 +5,9 @@ import { DialogForm } from "./dialog-form"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 import { Button } from "@/components/ui/button"
 import { Link, useLocation } from "react-router-dom"
+import { http } from "@/proxys/http"
+import { toast } from "sonner"
+import queryClient from "@/lib/query-client"
 
 
 interface DataTableColumn<T> {
@@ -107,24 +110,24 @@ DataTable.Skeleton = DataTableSkeleton
 const DataTableActions = ({ ...props }) => {
     const id = props?._id || props?.id;
 
-    const pathname = useLocation()
+    const { pathname } = useLocation()
 
     const handleDelete = async () => {
-/*         const path = history.state?.path
- */        /* if (!path) {
+        const path = history.state?.path
+        if (!path) {
             toast.error('Error: No se pudo obtener la ruta')
             return
         }
-        const endpoint = path.substring(0, path.lastIndexOf('/'))
-        await axios
-            .delete(`${endpoint}/delete/${id}`)
+        const endpoint = path
+        await http
+            .delete(`${endpoint}/${id}`)
             .then(() => {
                 toast.success('Eliminado correctamente')
                 queryClient.refetchQueries()
             })
             .catch(() => {
                 toast.error('Error al eliminar')
-            }) */
+            })
     }
 
     return (

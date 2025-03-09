@@ -3,6 +3,8 @@ export const route = {
     home: '/',
     login: '/login',
     crearCuenta: '/crearCuenta',
-    vehicles : "/dashboard/vehicles"
+    /*vehicles*/
+    vehicles : "/dashboard/vehicles",
+    vehiclesEdit : "/dashboard/vehicles/edit/:id"
 } as const
 
