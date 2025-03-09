@@ -31,9 +31,9 @@ export function getMenuList(pathname: string): Group[] {
                             active: pathname === route.vehicles
                         },
                         {
-                            href: '/posts/new',
-                            label: 'New Post',
-                            active: pathname === '/posts/new'
+                            href: route.create,
+                            label: 'Nuevo Vehiculo',
+                            active: pathname === route.create
                         }
                     ]
                 },
