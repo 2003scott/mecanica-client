@@ -22,7 +22,7 @@ interface LoginResponse {
 export const Login = () => {
     const navigate = useNavigate();
     const { loginUserName } = UseAuth();
-    const { register, handleSubmit, reset, formState: { errors } } = useForm();
+    const { register, handleSubmit, formState: { errors } } = useForm();
 
     const onSubmit = (data: any) => {
         const password = data.password

@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button"
-import { UseAuth } from "@/context/auth-context"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { Inputform } from "@/components/custom/input-form"
@@ -22,8 +21,7 @@ interface UserResponse {
 export const Signup = () => {
 
     const navigate = useNavigate()
-    const { login } = UseAuth()
-    const { register, handleSubmit, reset, formState: { errors } } = useForm()
+    const { register, handleSubmit, formState: { errors } } = useForm()
 
     const onSubmit = (data: any) => {
         http.post<UserResponse>("/users", {
