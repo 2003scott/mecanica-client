@@ -18,7 +18,7 @@ export const EditVehicle = () => {
 
     const { data, error, isLoading: loadingVehicles } = useFetch(`/vehicles/${id}`)
 
-    const { handleSubmit, register, formState: { errors }, reset, setValue } = useForm<vehicle>()
+    const { handleSubmit, register, formState: { errors }, setValue } = useForm<vehicle>()
     const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
