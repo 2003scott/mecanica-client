@@ -3,7 +3,7 @@ import { route } from "@/routes";
 import { Car } from "lucide-react";
 import { Link } from "react-router-dom";
 
-export default function Error() {
+export const Error = () => {
     return (
         <section className="py-20 bg-white w-full min-h-screen text-black">
             <div className="container mx-auto">

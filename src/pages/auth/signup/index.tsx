@@ -1,71 +1,67 @@
-
 import { Button } from "@/components/ui/button"
-import { UseAuth } from "@/app/context/auth-context"
+import { UseAuth } from "@/context/auth-context"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { Inputform } from "@/components/custom/input-form"
-import { http } from "@/app/proxys/http"
+import { http } from "@/proxys/http"
 import { CarIcon } from "lucide-react"
 import { Link, useNavigate } from "react-router-dom"
-import { Auth } from "@/app/domain/auth"
 
-interface LoginResponse {
+interface UserResponse {
     success: boolean;
     result: {
-        token: string;
-        expiresAt: number;
+        id: string;
+        username: string;
+        password: string;
+        status: string;
+        token: string | null;
     };
 }
 
 
+export const Signup = () => {
 
-export const Login = () => {
-    const navigate = useNavigate();
-    const { loginUserName } = UseAuth();
-    const { register, handleSubmit, reset, formState: { errors } } = useForm();
+    const navigate = useNavigate()
+    const { login } = UseAuth()
+    const { register, handleSubmit, reset, formState: { errors } } = useForm()
 
     const onSubmit = (data: any) => {
-        const password = data.password
-        const user = data.username
-        http.post<LoginResponse>("/users/login", {
+        http.post<UserResponse>("/users", {
             username: data.username,
-            password: data.password,
+            password: data.password
         })
-        http.get<Auth>(`/users/${user}`)
-            .then((response: any) => {
-                const { username } = response.data.result;
-                console.log(username)
+            .then((e) => {
+                const token = e.data.result.token;
+                return http.post(`/users/confirm/${token}`, {
+                    username: data.username
+                });
 
-                loginUserName(
-                    username,
-                    password
-                );
-                toast.success("Inicio de sesión exitoso");
-                navigate("/");
+            })
+            .then(() => {
+                toast.success("Cuenta creada y confirmada exitosamente");
+                console.log("Confirmación exitosa");
+                navigate("/login");
             })
             .catch((error) => {
-                toast.error("Error al iniciar sesión. Verifica tus credenciales.");
-                console.error("Error:", error);
+                toast.error("Error durante el proceso: " + (error.response?.data?.error || error.message));
+                console.log("Error", error);
             });
 
     };
-
-
 
     return (
         <div className="flex min-h-screen items-center justify-center bg-cover bg-center bg-primary">
             <div className="mx-auto w-full max-w-md space-y-8 rounded-lg bg-background p-8 shadow-2xl xs:px-2">
                 <div className="flex flex-col items-center justify-center space-y-2">
                     <CarIcon className="h-12 w-12 text-primary" />
-                    <h1 className="text-3xl font-bold tracking-tight">Bienvenido a AutoApp</h1>
-                    <p className="text-muted-foreground">Inicia sesión para continuar</p>
+                    <h1 className="text-3xl font-bold tracking-tight">Crear cuenta en AutoApp</h1>
                 </div>
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                     <Inputform
                         title="usuario"
                         placeholder="Ingresa tu nombre de usuario"
                         {...register('username', { required: true })}
-                        error={errors && errors.username && 'El usuario es requerido'}
+                        error={errors && errors.user && 'El usuario es requerido'}
                     />
                     <Inputform
                         title="Contraseña"
@@ -75,11 +71,11 @@ export const Login = () => {
                         error={errors && errors.password && 'La contraseña es requerida'}
                     />
                     <Button type="submit" className="w-full">
-                        Iniciar sesión
+                        Crear usuario
                     </Button>
                     <Button variant="link" type="button">
                         <Link to="/crearCuenta">
-                            ¿No tienes usuario y contraseña?
+                            ¿Tienes cuenta?
                         </Link>
                     </Button>
                 </form>

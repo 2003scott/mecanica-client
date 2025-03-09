@@ -3,9 +3,6 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from ".
 import { Pencil, Trash } from "lucide-react"
 import { DialogForm } from "./dialog-form"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
-/* import { usePathname } from "wouter/use-browser-location"
-import { Link } from "wouter" */
-
 import { Button } from "@/components/ui/button"
 import { Link, useLocation } from "react-router-dom"
 

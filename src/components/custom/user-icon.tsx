@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { UseAuth } from "@/app/context/auth-context";
+import { UseAuth } from "@/context/auth-context";
 
 export const UserIcon = () => {
     const { user } = UseAuth();

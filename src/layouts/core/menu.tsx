@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { CollapseMenuButton } from "./collapse-menu-buton";
-import { UseAuth } from "@/app/context/auth-context";
+import { UseAuth } from "@/context/auth-context";
 import { route } from "@/routes";
 import { toast } from "sonner";
 

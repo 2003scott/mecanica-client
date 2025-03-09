@@ -1,4 +1,4 @@
-import { Tag, Users, Settings, Bookmark, SquarePen, LayoutGrid } from 'lucide-react';
+import { Settings, Bookmark, SquarePen, LayoutGrid } from 'lucide-react';
 import { Group } from './menu';
 import { route } from '@/routes';
 
@@ -21,14 +21,14 @@ export function getMenuList(pathname: string): Group[] {
             menus: [
                 {
                     href: '',
-                    label: 'Posts',
-                    active: pathname.includes('/posts'),
+                    label: 'Vehiculos',
+                    active: pathname.includes(route.vehicles),
                     icon: SquarePen,
                     submenus: [
                         {
-                            href: '/posts',
-                            label: 'All Posts',
-                            active: pathname === '/posts'
+                            href: route.vehicles,
+                            label: 'Lista de Vehiculos',
+                            active: pathname === route.vehicles
                         },
                         {
                             href: '/posts/new',
@@ -43,26 +43,12 @@ export function getMenuList(pathname: string): Group[] {
                     active: pathname.includes('/categories'),
                     icon: Bookmark,
                     submenus: []
-                },
-                {
-                    href: '/tags',
-                    label: 'Tags',
-                    active: pathname.includes('/tags'),
-                    icon: Tag,
-                    submenus: []
                 }
             ]
         },
         {
             groupLabel: 'Settings',
             menus: [
-                {
-                    href: '/dashboard/users',
-                    label: 'Users',
-                    active: pathname.includes('/users'),
-                    icon: Users,
-                    submenus: []
-                },
                 {
                     href: '/account',
                     label: 'Account',

@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { Auth } from "../domain/auth";
+import { Auth } from "../types/auth";
 import { http } from "../proxys/http";
 
 
