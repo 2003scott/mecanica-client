@@ -1,88 +1,97 @@
-"use client"
-
 import { ButtonForm } from "@/components/custom/button-form"
 import { Inputform } from "@/components/custom/input-form"
-import { Selectform } from "@/components/custom/select-form"
-import { SelectItem } from "@radix-ui/react-select"
-import axios from "axios"
+import { TextAreaform } from "@/components/custom/textarea-form"
+import { http } from "@/proxys/http"
+import { vehicle } from "@/types/vehicles"
 import { useState } from "react"
-import { Controller, useForm } from "react-hook-form"
+import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 
+export const Create = () => {
 
-export const Create=({ })=> {
-
-    const { handleSubmit, register, formState: { errors }, reset, control, setValue } = useForm<any>()
+    const { handleSubmit, register, formState: { errors }, reset } = useForm<vehicle>()
     const [isLoading, setIsLoading] = useState(false)
 
-    const onSubmit = async (formdata: any) => {
-        setIsLoading(true)
-        const product = {
-            name: formdata.name,
-            status: formdata.status,
-            vendor: formdata.vendor
+    const onSubmit = async (data: vehicle) => {
+        const dataForm = {
+            make: data.make,
+            model: data.model,
+            year: parseInt(data.year.toString()),
+            category: data.category,
+            licensePlate: data.licensePlate,
+            registrationDate: data.registrationDate,
+            notes: data.notes
         }
-        axios.post('', product)
+        setIsLoading(true)
+        http.post('/vehicles', dataForm)
             .then(() => {
+                setIsLoading(false)
+                toast.success("Vehiculo creado correctamente")
                 reset()
-                setValue("vendor", "")
-                setValue("status", "")
+            }
+            ).catch(() => {
                 setIsLoading(false)
-                toast.success('Producto creado correctamente')
-            })
-            .catch(() => {
-                toast.error("Error al crear el producto")
-                setIsLoading(false)
+                toast.error("Error al crear el vehiculo")
             })
     }
 
     return (
         <>
-
             <div className="py-5 space-y-5">
                 <h1 className="text-xl font-bold">Nuevo Vehículo</h1>
                 <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-5 items-start">
                     <Inputform
-                        title="Producto"
+                        title="Modelo"
+                        placeholder="Ingresa el Modelo"
+                        {...register("model", { required: true })}
+                        error={errors.model && "El campo es requerido"}
+                    />
+
+                    <Inputform
+                        title="Placa"
+                        placeholder="Ingresa la placa"
+                        {...register("licensePlate", { required: true })}
+                        error={errors.licensePlate && "El campo es requerido"}
+                    />
+                    <Inputform
+                        title="Marca del Vehiculo"
+                        placeholder="Ingresa la marca"
+                        {...register("make", { required: true })}
+                        error={errors.make && "El campo es requerido"}
+                    />
+
+                    <Inputform
+                        title="Categoria"
+                        placeholder="Ingresa la categoria"
+                        {...register("category", { required: true })}
+                        error={errors.category && "El campo es requerido"}
+                    />
+
+                    <Inputform
+                        title="Año"
+                        type="number"
                         placeholder="Ingresa el producto"
-                        {...register("name", { required: true })}
-                        error={errors.name && "El campo es requerido"}
+                        {...register("year", { required: true })}
+                        error={errors.year && "El campo es requerido"}
                     />
-                    <Controller
-                        name="vendor"
-                        control={control}
-                        rules={{ required: true }}
-                        render={({ field }) => (
-                            <Selectform {...field}
-                                title="Tienda"
-                                className="min-w-64"
-                                placeholder="Selecciona la tienda"
-                                onValueChange={(defaultValue: any) => field.onChange(defaultValue)}
-                                error={errors.vendor && "La Tienda es requerido"}
-                            >
-                                <SelectItem value="shopimax">rrrrr</SelectItem>
-                                <SelectItem value="deprimera">De Primera</SelectItem>
-                                <SelectItem value="maximportaciones">Max Importaciones</SelectItem>
-                            </Selectform>
-                        )}
+
+                    <Inputform
+                        title="Dia de Registro"
+                        type="date"
+                        placeholder="Ingresa el la fecha de registro"
+                        {...register("registrationDate", { required: true })}
+                        error={errors.registrationDate && "El campo es requerido"}
                     />
-                    <Controller
-                        name="status"
-                        control={control}
-                        rules={{ required: true }}
-                        render={({ field }) => (
-                            <Selectform {...field}
-                                title="Estado"
-                                className="min-w-64"
-                                placeholder="Selecciona un estado"
-                                onValueChange={(defaultValue: any) => field.onChange(defaultValue)}
-                                error={errors.vendor && "El estado es requerido"}
-                            >
-                                <SelectItem value="active">Activo</SelectItem>
-                                <SelectItem value="draft">draft</SelectItem>
-                            </Selectform>
-                        )}
+
+
+                    <TextAreaform
+                        containerClassName="col-span-full"
+                        placeholder="Ingresa las notas"
+                        title="Notas"
+                        {...register("notes", { required: true })}
+                        error={errors.notes && "El campo es requerido"}
                     />
+
                     <ButtonForm
                         defaultText="Guardar"
                         className="col-span-full"
