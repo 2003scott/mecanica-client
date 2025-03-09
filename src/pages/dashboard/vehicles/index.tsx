@@ -20,7 +20,7 @@ export const Vehicles = () => {
             <TooltipProvider>
                 <Tooltip>
                     <TooltipTrigger asChild>
-                        <p className="capitalize w-30 truncate">
+                        <p className="capitalize w-44 truncate">
                             {`${row.notes}`.toLowerCase()}
                         </p>
                     </TooltipTrigger>
