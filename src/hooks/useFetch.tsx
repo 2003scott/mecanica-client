@@ -8,13 +8,14 @@ const fetchQuery = async (url: string) => {
         if (response.status === 200) {
             history.pushState(
                 {
-                    data: response.data?.result,
+                    data: response.data,
                     path : url
                 },
                 '',
                 location.pathname
             )
-            return response.data?.result
+            console.log(response)
+            return response.data
         }
     } catch (error) {
         if (error instanceof AxiosError) {

@@ -8,8 +8,8 @@ import { ReactQueryProvider } from './providers/query-provider';
 
 function App() {
     return (
-        <ReactQueryProvider>
-            <AuthProvider>
+        <AuthProvider>
+            <ReactQueryProvider>
                 <Toaster expand={false} richColors />
                 <BrowserRouter>
                     <MainLayout>
@@ -24,8 +24,8 @@ function App() {
                         </Routes>
                     </MainLayout>
                 </BrowserRouter>
-            </AuthProvider>
-        </ReactQueryProvider>
+            </ReactQueryProvider>
+        </AuthProvider>
     );
 }
 
