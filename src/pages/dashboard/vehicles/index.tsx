@@ -12,7 +12,12 @@ export const Vehicles = () => {
     return (
         <>
             <DataTable value={data?.result}>
+                <DataTable.Column header="Id" field="id" />
+                <DataTable.Column header="Modela" field="model" />
+                <DataTable.Column header="Placa" field="licensePlate" />
                 <DataTable.Column header="categoria" field="category" />
+                <DataTable.Column header="Año" field="year" />
+                <DataTable.Column header="Notas" field="notes" />
                 <DataTable.Column header="Acciones" body={(row) => <DataTable.Actions {...row} edit delete />} />
             </DataTable>
         </>
