@@ -14,7 +14,6 @@ const fetchQuery = async (url: string) => {
                 '',
                 location.pathname
             )
-            console.log(response)
             return response.data
         }
     } catch (error) {

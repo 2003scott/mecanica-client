@@ -1,7 +1,9 @@
 import { ButtonForm } from "@/components/custom/button-form"
 import { Inputform } from "@/components/custom/input-form"
 import { TextAreaform } from "@/components/custom/textarea-form"
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb"
 import { http } from "@/proxys/http"
+import { route } from "@/routes"
 import { vehicle } from "@/types/vehicles"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
@@ -37,6 +39,21 @@ export const Create = () => {
 
     return (
         <>
+            <Breadcrumb>
+                <BreadcrumbList>
+                    <BreadcrumbItem>
+                        <BreadcrumbLink to={route.home}>Panel</BreadcrumbLink>
+                    </BreadcrumbItem>
+                    <BreadcrumbSeparator />
+                    <BreadcrumbItem>
+                        <BreadcrumbLink to={route.vehicles}>Vehiculos</BreadcrumbLink>
+                    </BreadcrumbItem>
+                    <BreadcrumbSeparator />
+                    <BreadcrumbItem>
+                        <BreadcrumbPage>Crear</BreadcrumbPage>
+                    </BreadcrumbItem>
+                </BreadcrumbList>
+            </Breadcrumb>
             <div className="py-5 space-y-5">
                 <h1 className="text-xl font-bold">Nuevo Vehículo</h1>
                 <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-5 items-start">
