@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button"
 import { UseAuth } from "@/context/auth-context"
 import { useForm } from "react-hook-form"
@@ -8,6 +7,7 @@ import { http } from "@/proxys/http"
 import { CarIcon } from "lucide-react"
 import { Link, useNavigate } from "react-router-dom"
 import { Auth } from "@/types/auth"
+import { route } from "@/routes"
 
 interface LoginResponse {
     success: boolean;
@@ -17,40 +17,33 @@ interface LoginResponse {
     };
 }
 
-
-
 export const Login = () => {
     const navigate = useNavigate();
     const { loginUserName } = UseAuth();
     const { register, handleSubmit, formState: { errors } } = useForm();
 
-    const onSubmit = (data: any) => {
-        const password = data.password
-        const user = data.username
-        http.post<LoginResponse>("/users/login", {
-            username: data.username,
-            password: data.password,
-        })
-        http.get<Auth>(`/users/${user}`)
-            .then((response: any) => {
-                const { username } = response.data.result;
-                console.log(username)
+    const onSubmit = async (data: any) => {
+        try {
+            const password = data.password;
+            const user = data.username;
 
-                loginUserName(
-                    username,
-                    password
-                );
-                toast.success("Inicio de sesión exitoso");
-                navigate("/");
-            })
-            .catch((error) => {
-                toast.error("Error al iniciar sesión. Verifica tus credenciales.");
-                console.error("Error:", error);
+            await http.post<LoginResponse>("/users/login", {
+                username: data.username,
+                password: data.password,
             });
 
+            const response:any = await http.get<Auth>(`/users/${user}`);
+            const { username } = response.data.result;
+
+            loginUserName(username, password);
+            toast.success("Inicio de sesión exitoso");
+            navigate(route.home);
+
+        } catch (error) {
+            toast.error("Error al iniciar sesión. Verifica tus credenciales.");
+            console.error("Error:", error);
+        }
     };
-
-
 
     return (
         <div className="flex min-h-screen items-center justify-center bg-cover bg-center bg-primary">
@@ -75,6 +68,7 @@ export const Login = () => {
                         error={errors && errors.password && 'La contraseña es requerida'}
                     />
                     <Button type="submit" className="w-full">
+                    <Link to={route.home} />
                         Iniciar sesión
                     </Button>
                     <Button variant="link" type="button">
@@ -85,5 +79,5 @@ export const Login = () => {
                 </form>
             </div>
         </div>
-    )
-}
+    );
+};

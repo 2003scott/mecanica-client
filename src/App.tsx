@@ -2,7 +2,7 @@ import { route } from './routes';
 import { AuthProvider } from './context/auth-context';
 import { Toaster } from 'sonner';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import {  Account, Create, EditVehicle, Error, Home, Login, Signup, Vehicles } from './pages';
+import { Account, Create, EditVehicle, Error, Home, Login, Signup, Vehicles } from './pages';
 import { MainLayout } from './layouts/main-layout';
 import { ReactQueryProvider } from './providers/query-provider';
 import { ProtectedRoute } from './routes/routes';
@@ -13,24 +13,18 @@ function App() {
             <ReactQueryProvider>
                 <Toaster expand={false} richColors />
                 <BrowserRouter>
-                    <MainLayout>
-                        <Routes>
-                            <Route path={route.login} element={<Login />} />
-                            <Route path={route.crearCuenta} element={<Signup />} />
-                            <Route element={<ProtectedRoute />}>
-                                <Route path={route.home} element={<Home />} />
-                                <Route path={route.crearCuenta} element={<Signup />} />
-                                {/* Router vehicles */}
-                                <Route path={route.vehicles} element={<Vehicles />} />
-                                <Route path={route.create} element={<Create />} />
-                                <Route path={route.vehiclesEdit} element={<EditVehicle />} />
-                                <Route path={route.account} element={<Account />} />
-
-                                {/* Router 404 */}
-                                <Route path="*" element={<Error />} />
-                            </Route>
-                        </Routes>
-                    </MainLayout>
+                    <Routes>
+                        <Route path={route.login} element={<Login />} />
+                        <Route path={route.crearCuenta} element={<Signup />} />
+                        <Route element={<ProtectedRoute />}>
+                            <Route path={route.home} element={<Home />} />
+                            <Route path={route.vehicles} element={<Vehicles />} />
+                            <Route path={route.create} element={<Create />} />
+                            <Route path={route.vehiclesEdit} element={<EditVehicle />} />
+                            <Route path={route.account} element={<Account />} />
+                            <Route path="*" element={<Error />} />
+                        </Route>
+                    </Routes>
                 </BrowserRouter>
             </ReactQueryProvider>
         </AuthProvider>
