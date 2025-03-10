@@ -6,6 +6,7 @@ export const route = {
     /*vehicles*/
     vehicles : "/dashboard/vehicles",
     vehiclesEdit : "/dashboard/vehicles/edit/:id",
-    create : "/dashboard/vehicles/create"
+    create : "/dashboard/vehicles/create",
+    account: '/dashboard/account',
 } as const
 

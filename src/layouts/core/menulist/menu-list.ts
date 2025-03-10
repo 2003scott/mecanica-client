@@ -50,9 +50,9 @@ export function getMenuList(pathname: string): Group[] {
             groupLabel: 'Settings',
             menus: [
                 {
-                    href: '/account',
+                    href: route.account,
                     label: 'Account',
-                    active: pathname.includes('/account'),
+                    active: pathname.includes(route.account),
                     icon: Settings,
                     submenus: []
                 }
