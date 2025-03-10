@@ -1,4 +1,4 @@
-import { Settings, Bookmark, SquarePen, LayoutGrid } from 'lucide-react';
+import { Settings, SquarePen, LayoutGrid } from 'lucide-react';
 import { Group } from './menu';
 import { route } from '@/routes';
 
@@ -17,7 +17,7 @@ export function getMenuList(pathname: string): Group[] {
             ]
         },
         {
-            groupLabel: 'Contents',
+            groupLabel: 'Contenido',
             menus: [
                 {
                     href: '',
@@ -37,21 +37,21 @@ export function getMenuList(pathname: string): Group[] {
                         }
                     ]
                 },
-                {
+                /* {
                     href: '/categories',
                     label: 'Categories',
                     active: pathname.includes('/categories'),
                     icon: Bookmark,
                     submenus: []
-                }
+                } */
             ]
         },
         {
-            groupLabel: 'Settings',
+            groupLabel: 'Configuración',
             menus: [
                 {
                     href: route.account,
-                    label: 'Account',
+                    label: 'Perfil',
                     active: pathname.includes(route.account),
                     icon: Settings,
                     submenus: []
