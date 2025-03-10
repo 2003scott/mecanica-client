@@ -3,7 +3,6 @@ import { AuthProvider } from './context/auth-context';
 import { Toaster } from 'sonner';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Account, Create, EditVehicle, Error, Home, Login, Signup, Vehicles } from './pages';
-import { MainLayout } from './layouts/main-layout';
 import { ReactQueryProvider } from './providers/query-provider';
 import { ProtectedRoute } from './routes/routes';
 

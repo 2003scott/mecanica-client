@@ -1,4 +1,4 @@
-import { Settings, Bookmark, SquarePen, LayoutGrid } from 'lucide-react';
+import { Settings, SquarePen, LayoutGrid } from 'lucide-react';
 import { Group } from './menu';
 import { route } from '@/routes';
 
