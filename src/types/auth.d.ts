@@ -1,4 +1,5 @@
 export interface Auth {
+    result: { username: any; };
     id?: string;
     username?: string;
     password?: string;

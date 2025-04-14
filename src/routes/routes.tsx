@@ -8,6 +8,8 @@ export const ProtectedRoute = () => {
 
     if (!isLoggedIn) return <Navigate to={route.login} replace />
 
+    console.log("isLoggedIn", isLoggedIn)
+
     return (
         <MainLayout>
             <Outlet />

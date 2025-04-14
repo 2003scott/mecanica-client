@@ -22,29 +22,31 @@ export const Login = () => {
     const { loginUserName } = UseAuth();
     const { register, handleSubmit, formState: { errors } } = useForm();
 
-    const onSubmit = async (data: any) => {
-        try {
-            const password = data.password;
-            const user = data.username;
+   const onSubmit = async (data: any) => {
+    try {
+        const password = data.password;
+        const user = data.username;
 
-            await http.post<LoginResponse>("/users/login", {
-                username: data.username,
-                password: data.password,
-            });
+        const loginResponse = await http.post<LoginResponse>("/users/login", {
+            username: data.username,
+            password: data.password,
+        });
 
-            const response:any = await http.get<Auth>(`/users/${user}`);
-            const { username } = response.data.result;
-
-            loginUserName(username, password);
-            toast.success("Inicio de sesión exitoso");
-            navigate(route.home);
-
-        } catch (error) {
-            toast.error("Error al iniciar sesión. Verifica tus credenciales.");
-            console.error("Error:", error);
+        if (loginResponse.status !== 200 && loginResponse.status !== 201) {
+            throw new Error("Error en la autenticación");
         }
-    };
+        const userResponse = await http.get<Auth>(`/users/${user}`);
+        const { username } = userResponse.data.result;
 
+        await loginUserName(username, password);
+
+        toast.success("Inicio de sesión exitoso");
+        navigate(route.home);
+    } catch (error) {
+        toast.error("Error al iniciar sesión. Verifica tus credenciales.");
+        console.error("Error:", error);
+    }
+};
     return (
         <div className="flex min-h-screen items-center justify-center bg-cover bg-center bg-primary">
             <div className="mx-auto w-full max-w-md space-y-8 rounded-lg bg-background p-8 shadow-2xl xs:px-2">
@@ -67,10 +69,9 @@ export const Login = () => {
                         {...register('password', { required: true })}
                         error={errors && errors.password && 'La contraseña es requerida'}
                     />
-                    <Button type="submit" className="w-full">
-                    <Link to={route.home} />
-                        Iniciar sesión
-                    </Button>
+                   <Button type="submit" className="w-full">
+    Iniciar sesión
+</Button>
                     <Button variant="link" type="button">
                         <Link to="/crearCuenta">
                             ¿No tienes usuario y contraseña?
