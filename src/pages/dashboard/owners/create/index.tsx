@@ -1,6 +1,7 @@
 import { ButtonForm } from "@/components/custom/button-form"
 import { Inputform } from "@/components/custom/input-form"
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb"
+import { Card } from "@/components/ui/card"
 import { http } from "@/proxys/http"
 import { route } from "@/routes"
 import { useState } from "react"
@@ -64,7 +65,7 @@ export const CreateOwner = () => {
                     </BreadcrumbItem>
                 </BreadcrumbList>
             </Breadcrumb>
-            <div className="py-5 space-y-5">
+            <Card className="p-5 space-y-5 mt-5">
                 <h1 className="text-xl font-bold">Nuevo Propietario</h1>
                 <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-5 items-start">
                     <Inputform
@@ -125,7 +126,7 @@ export const CreateOwner = () => {
                     />
 
                 </form>
-            </div>
+            </Card>
         </>
     )
 }

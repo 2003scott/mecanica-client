@@ -4,6 +4,7 @@ import { Loader } from "@/components/custom/loader"
 import { Selectform } from "@/components/custom/select-form"
 import { TextAreaform } from "@/components/custom/textarea-form"
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb"
+import { Card } from "@/components/ui/card"
 import { SelectItem } from "@/components/ui/select"
 import { useFetch } from "@/hooks/useFetch"
 import { http } from "@/proxys/http"
@@ -65,7 +66,7 @@ export const Create = () => {
                     </BreadcrumbItem>
                 </BreadcrumbList>
             </Breadcrumb>
-            <div className="py-5 space-y-5">
+            <Card className="p-5 space-y-5 mt-5">
                 <h1 className="text-xl font-bold">Nuevo Vehículo</h1>
                 <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-5 items-start">
                     <Inputform
@@ -155,7 +156,7 @@ export const Create = () => {
                     />
 
                 </form>
-            </div>
+            </Card>
         </>
     );
 }
