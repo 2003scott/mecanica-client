@@ -10,4 +10,5 @@ export interface vehicle {
     ownerId: string;
     createdAt: string;
     updatedAt: string;
+    status: string;
 }

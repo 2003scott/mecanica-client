@@ -1,18 +1,25 @@
 import { ButtonForm } from "@/components/custom/button-form"
 import { Inputform } from "@/components/custom/input-form"
+import { Loader } from "@/components/custom/loader"
+import { Selectform } from "@/components/custom/select-form"
 import { TextAreaform } from "@/components/custom/textarea-form"
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb"
+import { SelectItem } from "@/components/ui/select"
+import { useFetch } from "@/hooks/useFetch"
 import { http } from "@/proxys/http"
 import { route } from "@/routes"
 import { vehicle } from "@/types/vehicles"
 import { useState } from "react"
-import { useForm } from "react-hook-form"
+import { Controller, useForm } from "react-hook-form"
 import { toast } from "sonner"
 
 export const Create = () => {
 
-    const { handleSubmit, register, formState: { errors }, reset } = useForm<vehicle>()
-    const [isLoading, setIsLoading] = useState(false)
+    const { handleSubmit, register, formState: { errors }, reset, control, setValue } = useForm<vehicle>()
+    const { data, error, isLoading } = useFetch('/owner');
+    const [isLoadings, setIsLoadings] = useState(false)
+
+    console.log(data)
 
     const onSubmit = async (data: vehicle) => {
         const dataForm = {
@@ -22,20 +29,26 @@ export const Create = () => {
             category: data.category,
             licensePlate: data.licensePlate,
             registrationDate: data.registrationDate,
-            notes: data.notes
+            notes: data.notes,
+            ownerId: data.ownerId,
+            status: data.status,
         }
-        setIsLoading(true)
+        setIsLoadings(true)
         http.post('/vehicles', dataForm)
             .then(() => {
-                setIsLoading(false)
+                setIsLoadings(false)
                 toast.success("Vehiculo creado correctamente")
+                setValue("ownerId", "")
                 reset()
             }
-            ).catch(() => {
-                setIsLoading(false)
-                toast.error("Error al crear el vehiculo")
+            ).catch((err) => {
+                setIsLoadings(false)
+                toast.error(err.response.data.error)
             })
     }
+
+    if (isLoading) return <Loader />
+    if (error) return <p>Error al cargar los propietarios</p>
 
     return (
         <>
@@ -100,6 +113,33 @@ export const Create = () => {
                         error={errors.registrationDate && "El campo es requerido"}
                     />
 
+                    <Controller
+                        name="ownerId"
+                        control={control}
+                        rules={{ required: true }}
+                        render={({ field }) => (
+                            <Selectform {...field}
+                                title="Propietario"
+                                className="min-w-64"
+                                placeholder="Selecciona al Propietario"
+                                onValueChange={(defaultValue: string) => field.onChange(defaultValue)}
+                                error={errors.ownerId && "La Tienda es requerido"}
+                            >
+                                {data.result.map((owner: { id: string; name: string; lastName: string }) => (
+                                    <SelectItem key={owner.id} value={owner.id}>
+                                        {owner.name} {owner.lastName}
+                                    </SelectItem>
+                                ))}
+                            </Selectform>
+                        )}
+                    />
+
+                    <Inputform
+                        title="Estado del Vehiculo"
+                        placeholder="Ingresa el estado del vehiculo"
+                        {...register("status", { required: true })}
+                        error={errors.status && "El campo es requerido"}
+                    />
 
                     <TextAreaform
                         containerClassName="col-span-full"
@@ -112,7 +152,7 @@ export const Create = () => {
                     <ButtonForm
                         defaultText="Guardar"
                         className="col-span-full"
-                        isLoading={isLoading}
+                        isLoading={isLoadings}
                         type="submit"
                     />
 
