@@ -7,25 +7,25 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { useFetch } from '@/hooks/useFetch';
 import { route } from '@/routes';
 
-export const Vehicles = () => {
+export const Owners = () => {
 
-    const { data, error, isLoading, refetch } = useFetch('/vehicles');
+    const { data, error, isLoading, refetch } = useFetch('/owner');
 
     if (isLoading) return <Loader />;
 
     if (error) return <ErrorPage mensaje='asdasdasd'/>;
 
-    const Notes = (row: { notes: string } ) => {
+    const Apellidos = (row: { lastName: string, secondLastName : string } ) => {
         return (
             <TooltipProvider>
                 <Tooltip>
                     <TooltipTrigger asChild>
-                        <p className="capitalize w-44 truncate">
-                            {`${row.notes}`.toLowerCase()}
+                        <p className="capitalize w-32 truncate">
+                            {`${row.lastName} ${row.secondLastName}`.toLowerCase()}
                         </p>
                     </TooltipTrigger>
                     <TooltipContent>
-                        <p className="capitalize">{`${row.notes}`.toLowerCase()}</p>
+                        <p className="capitalize">{`${row.lastName} ${row.secondLastName}`.toLowerCase()}</p>
                     </TooltipContent>
                 </Tooltip>
             </TooltipProvider>
@@ -40,20 +40,18 @@ export const Vehicles = () => {
                     </BreadcrumbItem>
                     <BreadcrumbSeparator />
                     <BreadcrumbItem>
-                        <BreadcrumbPage>Vehiculos</BreadcrumbPage>
+                        <BreadcrumbPage>Propietarios</BreadcrumbPage>
                     </BreadcrumbItem>
                 </BreadcrumbList>
             </Breadcrumb>
             <ToolbarAction title="Lista de Vehiculos" onRefresh={refetch} />
             <DataTable value={data?.result}>
                 <DataTable.Column header="Id" field="id" />
-                <DataTable.Column header="Modela" field="model" />
-                <DataTable.Column header="Placa" field="licensePlate" />
-                <DataTable.Column header="categoria" field="category" />
-                <DataTable.Column header="Status" field="status" />
-                <DataTable.Column header="Propietario" field="owner.name" />
-                <DataTable.Column header="Año" field="year" />
-                <DataTable.Column header="Notas" body={Notes} />
+                <DataTable.Column header="Nombre" field="name" />
+                <DataTable.Column header="Apellidos" body={Apellidos} />
+                <DataTable.Column header="DNI" field="documentNumber" />
+                <DataTable.Column header="Telefono" field="phoneNumber" />
+                <DataTable.Column header="Email" field="email" />
                 <DataTable.Column header="Acciones" body={(row) => <DataTable.Actions {...row} edit delete />} />
             </DataTable>
         </>

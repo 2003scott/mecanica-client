@@ -2,7 +2,7 @@ import { route } from './routes';
 import { AuthProvider } from './context/auth-context';
 import { Toaster } from 'sonner';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { Account, Create, EditVehicle, Error, Home, Login, Signup, Vehicles } from './pages';
+import { Account, Create, EditVehicle, Error, Home, Login, Owners, Signup, Vehicles } from './pages';
 import { ReactQueryProvider } from './providers/query-provider';
 import { ProtectedRoute } from './routes/routes';
 
@@ -21,6 +21,7 @@ function App() {
                             <Route path={route.create} element={<Create />} />
                             <Route path={route.vehiclesEdit} element={<EditVehicle />} />
                             <Route path={route.account} element={<Account />} />
+                            <Route path={route.owners} element={<Owners />} />
                             <Route path="*" element={<Error />} />
                         </Route>
                     </Routes>
