@@ -19,8 +19,6 @@ export const Create = () => {
     const { data, error, isLoading } = useFetch('/owner');
     const [isLoadings, setIsLoadings] = useState(false)
 
-    console.log(data)
-
     const onSubmit = async (data: vehicle) => {
         const dataForm = {
             make: data.make,

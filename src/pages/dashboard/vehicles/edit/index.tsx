@@ -1,14 +1,16 @@
 import { ButtonForm } from "@/components/custom/button-form";
 import { Inputform } from "@/components/custom/input-form";
+import { Selectform } from "@/components/custom/select-form";
 import { TextAreaform } from "@/components/custom/textarea-form";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
+import { SelectItem } from "@/components/ui/select";
 import { useFetch } from "@/hooks/useFetch";
 import { http } from "@/proxys/http";
 import { route } from "@/routes";
 import { vehicle } from "@/types/vehicles";
 import { Loader } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 import { toast } from "sonner";
 
@@ -17,8 +19,8 @@ export const EditVehicle = () => {
     const { id } = useParams<{ id: string }>()
 
     const { data, error, isLoading: loadingVehicles } = useFetch(`/vehicles/${id}`)
-
-    const { handleSubmit, register, formState: { errors }, setValue } = useForm<vehicle>()
+    const { data: owner, error: errorw, isLoading: isloadingw } = useFetch('/owner');
+    const { handleSubmit, register, formState: { errors }, setValue, control } = useForm<vehicle>()
     const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
@@ -36,7 +38,9 @@ export const EditVehicle = () => {
             category: data.category,
             licensePlate: data.licensePlate,
             registrationDate: data.registrationDate,
-            notes: data.notes
+            notes: data.notes,
+            ownerId: data.ownerId,
+            status: data.status,
         }
         setIsLoading(true)
         http.patch(`/vehicles/${id}`, dataForm)
@@ -44,15 +48,15 @@ export const EditVehicle = () => {
                 setIsLoading(false)
                 toast.success("Vehiculo Editado correctamente")
             }
-            ).catch(() => {
+            ).catch((err) => {
                 setIsLoading(false)
-                toast.error("Error al Editar el vehiculo")
+                toast.error(err.response.data.error)
             })
     }
 
-    if (loadingVehicles) return <Loader />;
+    if (loadingVehicles || isloadingw) return <Loader />;
 
-    if (error) return <div>Error...</div>;
+    if (error || errorw) return <div>Error...</div>;
 
     console.log(data.result.registrationDate)
 
@@ -125,7 +129,35 @@ export const EditVehicle = () => {
                         error={errors.registrationDate && "El campo es requerido"}
                     />
 
+                    <Controller
+                        name="ownerId"
+                        control={control}
+                        rules={{ required: true }}
+                        defaultValue={data?.result?.owner.id}
+                        render={({ field }) => (
+                            <Selectform {...field}
+                                title="Propietario"
+                                className="min-w-64"
+                                placeholder="Selecciona al Propietario"
+                                onValueChange={(value: string) => field.onChange(value)}
+                                error={errors.ownerId && "La Tienda es requerido"}
+                            >
+                                {owner.result.map((owner: { id: string; name: string; lastName: string }) => (
+                                    <SelectItem key={owner.id} value={owner.id}>
+                                        {owner.name} {owner.lastName}
+                                    </SelectItem>
+                                ))}
+                            </Selectform>
+                        )}
+                    />
 
+                    <Inputform
+                        title="Estado del Vehiculo"
+                        placeholder="Ingresa el estado del vehiculo"
+                        defaultValue={data?.result?.status}
+                        {...register("status", { required: true })}
+                        error={errors.status && "El campo es requerido"}
+                    />
 
                     <TextAreaform
                         containerClassName="col-span-full"
